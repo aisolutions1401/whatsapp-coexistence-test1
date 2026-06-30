@@ -1,20 +1,22 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
   <title>WhatsApp Coexistence Test</title>
 </head>
-<body>
+<body style="font-family: Arial, sans-serif; text-align: center; padding-top: 50px;">
 
-<h1>WhatsApp Coexistence Test</h1>
+<h1>WhatsApp Coexistence Setup</h1>
+<p>Click the button below to link your phone app to the Meta API.</p>
 
-<button onclick="launchSignup()">
+<button onclick="launchSignup()" style="background-color: #1877F2; color: white; padding: 12px 24px; font-size: 16px; font-weight: bold; border: none; border-radius: 5px; cursor: pointer;">
   Connect WhatsApp
 </button>
 
 <script>
 window.fbAsyncInit = function () {
   FB.init({
-    appId: '1116754060622075',
+    appId: '1116754060622075', // Your Meta App ID
     cookie: true,
     xfbml: true,
     version: 'v23.0'
@@ -31,24 +33,35 @@ window.fbAsyncInit = function () {
 }(document, 'script', 'facebook-jssdk'));
 
 function launchSignup() {
-
   FB.login(
     function(response) {
-      console.log(response);
+      console.log("Meta Response Data:", response);
 
       if (response.authResponse) {
-        alert("Meta Login Success");
+        // This 'code' is what your backend needs to exchange for the Permanent Access Token
+        var sessionCode = response.authResponse.code;
+        console.log("Authorization Code to send to backend:", sessionCode);
+        alert("Meta Login Success! Code generated inside console.");
       } else {
         alert("Login Cancelled");
       }
     },
     {
-      config_id: '1542732937515927',
+      config_id: '1542732937515927', // Your Configuration ID
       response_type: 'code',
-      override_default_response_type: true
+      override_default_response_type: true,
+      
+      // CRUCIAL ADDITION FOR COEXISTENCE:
+      extras: {
+        feature: 'whatsapp_embedded_signup',
+        sessionInfoVersion: 3,
+        setup: {
+          coexistence: true,        // Force Meta to keep the phone app database alive
+          assetTypes: ['whatsapp']   // Forces Meta to drop the Instagram selections entirely
+        }
+      }
     }
   );
-
 }
 </script>
 
