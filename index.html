@@ -1,22 +1,20 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
   <title>WhatsApp Coexistence Test</title>
 </head>
-<body style="font-family: Arial, sans-serif; text-align: center; padding-top: 50px;">
+<body>
 
-<h1>WhatsApp Coexistence Setup</h1>
-<p>Click the button below to link your phone app to the Meta API.</p>
+<h1>WhatsApp Coexistence Test</h1>
 
-<button onclick="launchSignup()" style="background-color: #1877F2; color: white; padding: 12px 24px; font-size: 16px; font-weight: bold; border: none; border-radius: 5px; cursor: pointer;">
+<button onclick="launchSignup()">
   Connect WhatsApp
 </button>
 
 <script>
 window.fbAsyncInit = function () {
   FB.init({
-    appId: '1116754060622075', // Your Meta App ID
+    appId: '1116754060622075',
     cookie: true,
     xfbml: true,
     version: 'v23.0'
@@ -33,35 +31,24 @@ window.fbAsyncInit = function () {
 }(document, 'script', 'facebook-jssdk'));
 
 function launchSignup() {
+
   FB.login(
     function(response) {
-      console.log("Meta Response Data:", response);
+      console.log(response);
 
       if (response.authResponse) {
-        // This 'code' is what your backend needs to exchange for the Permanent Access Token
-        var sessionCode = response.authResponse.code;
-        console.log("Authorization Code to send to backend:", sessionCode);
-        alert("Meta Login Success! Code generated inside console.");
+        alert("Meta Login Success");
       } else {
         alert("Login Cancelled");
       }
     },
     {
-      config_id: '1542732937515927', // Your Configuration ID
+      config_id: '1542732937515927',
       response_type: 'code',
-      override_default_response_type: true,
-      
-      // CRUCIAL ADDITION FOR COEXISTENCE:
-      extras: {
-        feature: 'whatsapp_embedded_signup',
-        sessionInfoVersion: 3,
-        setup: {
-          coexistence: true,        // Force Meta to keep the phone app database alive
-          assetTypes: ['whatsapp']   // Forces Meta to drop the Instagram selections entirely
-        }
-      }
+      override_default_response_type: true
     }
   );
+
 }
 </script>
 
