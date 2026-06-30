@@ -1,12 +1,56 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>WhatsApp Coexistence Test</title>
+  <title>WhatsApp Coexistence Test</title>
 </head>
 <body>
-    <h1>WhatsApp Coexistence Test Page</h1>
-    <button onclick="alert('Page Working')">
-        Connect WhatsApp
-    </button>
+
+<h1>WhatsApp Coexistence Test</h1>
+
+<button onclick="launchSignup()">
+  Connect WhatsApp
+</button>
+
+<script>
+window.fbAsyncInit = function () {
+  FB.init({
+    appId: '1116754060622075',
+    cookie: true,
+    xfbml: true,
+    version: 'v23.0'
+  });
+};
+
+(function (d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s);
+  js.id = id;
+  js.src = "https://connect.facebook.net/en_US/sdk.js";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));
+
+function launchSignup() {
+
+  FB.login(
+    function(response) {
+      console.log(response);
+
+      if (response.authResponse) {
+        alert("Meta Login Success");
+      } else {
+        alert("Login Cancelled");
+      }
+    },
+    {
+      config_id: '1542732937515927',
+      response_type: 'code',
+      override_default_response_type: true
+    }
+  );
+
+}
+</script>
+
 </body>
 </html>
